@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import sqlite3
+import xlrd
 
 #Set up Sqlite
 connection = sqlite3.connect("StateGunSafetyLaws.db")
@@ -47,11 +48,15 @@ cursor.executemany("insert into StateGunSafetyLaws values (?,?,?,?)", state_gun_
 #for row in cursor.execute("select * from StateGunSafetyLaws"):
     #print(row)
 connection.commit()
-
+#Create Sql Dataframe StateGunSafetyLaws 
 sql = pd.read_sql_query("select * from StateGunSafetyLaws", connection)
 df = pd.DataFrame(sql, columns=["state", "law_type", "restrictive", "bill_identifier"])
 
 print(df)
+
+#Add Excel Dataframes
+FirearmHomicides = pd.read_excel('FirearmHomicides.xls,header=0')
+
 
 
 #print specific Gun Laws
