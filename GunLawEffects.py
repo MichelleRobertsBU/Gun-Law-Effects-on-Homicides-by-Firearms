@@ -55,8 +55,10 @@ df = pd.DataFrame(sql, columns=["state", "law_type", "restrictive", "bill_identi
 print(df)
 
 #Add Excel Dataframes
-FirearmHomicides = pd.read_excel('FirearmHomicides.xls,header=0')
-
+FirearmHomicides = pd.read_excel('FirearmHomicides.xls, header=0')
+GunLawStrength = pd.read_excel('GiffordGunLawStrength.xlsx, header=0')
+HomicidesbyState = pd.read_excel('HomicidesbyState.xls, header=0')
+MostGunSales = pd.read_excel('StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx, header=0')
 
 
 #print specific Gun Laws
