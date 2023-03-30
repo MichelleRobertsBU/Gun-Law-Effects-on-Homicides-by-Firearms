@@ -57,13 +57,13 @@ connection.close()
 
 #Add Excel Dataframes
 print('*********************************')
-MurderVictimsbyWeapon = pd.read_excel('data\FirearmHomicides.xls', header=3)
+StateGunSafetyLaws = pd.read_excel('data\StateGunSafetyLaws.xlsx', header=0)
 GunLawStrength = pd.read_excel('data\GiffordGunLawStrength.xlsx', header=0)
 HomicidesbyState = pd.read_excel('data\HomicidesbyState.xls', header=3)
 MostGunSales = pd.read_excel('data\StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx', header =0)
 
-MurderVictimsbyWeapon.head()
-print(MurderVictimsbyWeapon)
+StateGunSafetyLaws.head()
+print(StateGunSafetyLaws)
 print('*********************************')
 GunLawStrength.head()
 print(GunLawStrength)
@@ -81,13 +81,12 @@ c = db_conn.cursor()
 
 c.execute(
     """
-    CREATE TABLE MurderVictimsbyWeapon(
-        Weapons TEXT,
-        '2016' INTEGER,
-        '2017' INTEGER,
-        '2018' INTEGER,
-        '2019' INTEGER,
-        PRIMARY KEY(Weapons),
+    CREATE TABLE StateGunSafetyLaws(
+        State TEXT,
+        Law Type TEXT,
+        Restrictive to Gun Owners TEXT,
+        Bill Identifier TEXT,
+        PRIMARY KEY(Bill Identifier),
         FOREIGN KEY(State) REFERENCES HomicidesbyState(State),
         FOREIGN KEY(Gun Law Strength(Ranked)) REFERENCES GunLawStrength(Gun Law Strength(Ranked))
         );
