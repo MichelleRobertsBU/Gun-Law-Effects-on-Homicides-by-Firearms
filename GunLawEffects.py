@@ -53,12 +53,103 @@ sql = pd.read_sql_query("select * from StateGunSafetyLaws", connection)
 df = pd.DataFrame(sql, columns=["state", "law_type", "restrictive", "bill_identifier"])
 
 print(df)
+connection.close()
 
 #Add Excel Dataframes
-FirearmHomicides = pd.read_excel('FirearmHomicides.xls, header=0')
-GunLawStrength = pd.read_excel('GiffordGunLawStrength.xlsx, header=0')
-HomicidesbyState = pd.read_excel('HomicidesbyState.xls, header=0')
-MostGunSales = pd.read_excel('StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx, header=0')
+print('*********************************')
+MurderVictimsbyWeapon = pd.read_excel('data\FirearmHomicides.xls', header=3)
+GunLawStrength = pd.read_excel('data\GiffordGunLawStrength.xlsx', header=0)
+HomicidesbyState = pd.read_excel('data\HomicidesbyState.xls', header=3)
+MostGunSales = pd.read_excel('data\StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx', header =0)
+
+MurderVictimsbyWeapon.head()
+print(MurderVictimsbyWeapon)
+print('*********************************')
+GunLawStrength.head()
+print(GunLawStrength)
+print('*********************************')
+HomicidesbyState.head
+print(HomicidesbyState)
+print('*********************************')
+MostGunSales.head
+print(MostGunSales)
+
+#Create SQLite Database with excel files
+print('*********************************')
+db_conn = sqlite3.connect("data/allFiles.db")
+c = db_conn.cursor()
+
+c.execute(
+    """
+    CREATE TABLE MurderVictimsbyWeapon(
+        Weapons TEXT,
+        '2016' INTEGER,
+        '2017' INTEGER,
+        '2018' INTEGER,
+        '2019' INTEGER,
+        PRIMARY KEY(Weapons),
+        FOREIGN KEY(State) REFERENCES HomicidesbyState(State),
+        FOREIGN KEY(Gun Law Strength(Ranked)) REFERENCES GunLawStrength(Gun Law Strength(Ranked))
+        );
+    """
+    )
+
+c.execute(
+    """
+    CREATE TABLE GunLawStrength(
+        Gun Law Strength(Ranked) INTEGER
+        State TEXT,
+        Grade TEXT,
+        Gun Death Rate(Ranked) INTEGER,
+        Gun Death Rate (per 100K) INTEGER,
+        PRIMARY KEY(Gun Law Strength(Ranked)),
+        FOREIGN KEY(State) REFERENCES HomicidesbyState(State),
+        FOREIGN KEY(Rank '2023') REFERENCES MostGunSales(Rank '2023')
+        );
+    """
+    )
+
+c.execute(
+    """
+    CREATE TABLE HomicidesbyState(
+        State TEXT,
+        Total Murders INTEGER,
+        Total Firearms INTEGER,
+        Handguns INTEGER,
+        Rifles INTEGER,
+        Shotguns INTEGER,
+        Type unknown INTEGER,
+        Knives or cutting instruments INTEGER,
+        Other Weapons INTEGER,
+        PRIMARY KEY(State),
+        FOREIGN KEY(Rank '2023') REFERENCES MostGunSales(Rank '2023'),
+        FOREIGN KEY(Gun Law Strength(Ranked)) REFERENCES GunLawStrength(Gun Law Strength(Ranked))
+        );
+    """
+    )
+
+c.execute(
+    """
+    CREATE TABLE MostGunSales(
+        State TEXT,
+        Firearm Background Checks per 1,000 Residents, Feb 2023 DECIMAL,
+        Firearm Background Checks, Feb 2023 REAL,
+        Firearm Background Checks per 1,000 Residents, Feb 2022 DECIMAL,
+        Firearm Background Checks, Feb 2022 REAL,
+        '2022' Population REAL,
+        Rank '2023' INTEGER,
+        Firearm Type TEXT,
+        PRIMARY KEY(Rank '2023'),
+        FOREIGN KEY(State) REFERENCES HomicidesbyState(State),
+        FOREIGN KEY(Gun Law Strength(Ranked)) REFERENCES GunLawStrength(Gun Law Strength(Ranked))
+        );
+    """
+    )
+
+MurderVictimsbyWeapon.to_sql('MurderVictimsbyWeapon', db_conn, if_exists='append', index=False)
+GunLawStrength.to_sql('GunLawStrength', db_conn, if_exists='append', index=False)
+HomicidesbyState.to_sql('HomicidesbyState', db_conn, if_exists='append', index=False)
+MostGunSales.to_sql('MostGunSales', db_conn, if_exists='append', index=False)
 
 
 #print specific Gun Laws

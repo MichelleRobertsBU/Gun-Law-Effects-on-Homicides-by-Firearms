@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "task-FirearmHomicides",
+      "appliesTo": "data/FirearmHomicides.xls",
+      "type": "launch"
+    }
+  ]
+}
