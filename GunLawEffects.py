@@ -1,11 +1,12 @@
-import select
+import pandas as pd
+import numpy as np
 import sqlite3
 
 #Set up Sqlite
 connection = sqlite3.connect("StateGunSafetyLaws.db")
 cursor = connection.cursor()
 
-cursor.execute("create table StateGunSafetyLaws (state text, law_type text, restrictive text, bill_identifier text)")
+cursor.execute("create table if not exists StateGunSafetyLaws (state text, law_type text, restrictive text, bill_identifier text)")
 
 state_gun_laws_list = [
     ('California', 'Background Check, Domentic Abuse Restriction, Extreme Risk Protection Orders, Community Violence Intervention, Ghost Guns, Gun Dealer Regulations, Safe Storage Laws Notifications for Kids, Access to Justice, Location Regulation', 'Y', 'AB2551, AB2239, AB2870, AB2697, AB200, AB1929, SB154, AB2552, AB1621, AB2156, SB1327, SB1384, AB228, AB1842, AB452, SB906, AB2571, AB1594, SB915'),
@@ -43,17 +44,23 @@ state_gun_laws_list = [
 cursor.executemany("insert into StateGunSafetyLaws values (?,?,?,?)", state_gun_laws_list)
 
 #print database rows
-for row in cursor.execute("select * from StateGunSafetyLaws"):
-    print(row)
+#for row in cursor.execute("select * from StateGunSafetyLaws"):
+    #print(row)
+connection.commit()
+
+sql = pd.read_sql_query("select * from StateGunSafetyLaws", connection)
+df = pd.DataFrame(sql, columns=["state", "law_type", "restrictive", "bill_identifier"])
+
+print(df)
+
 
 #print specific Gun Laws
 print('*********************************')
-cursor.execute("create table LawType1 (state text, law_type text)")
-law_type1 = ('select law_type from StateGunSafetyLaws where law_type like "%Community Violence Intervention%"');
-cursor.executemany('insert into LawType1 values (?,?)', law_type1)
-for row in cursor.execute('select * from LawType1'):
-    print(row)
-
+#cursor.execute("create table LawType1 (state text, law_type text)")
+#law_type1 = ('select law_type from StateGunSafetyLaws where law_type like "%Community Violence Intervention%"');
+#cursor.executemany("insert into LawType1 values (?,?)", law_type1)
+#for row in cursor.execute("select * from LawType1"):
+    #print(row)
 
 connection.close()
 
