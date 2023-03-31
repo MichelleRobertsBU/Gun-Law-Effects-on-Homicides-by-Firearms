@@ -7,7 +7,7 @@ import xlrd
 print('*********************************')
 StateGunSafetyLaws = pd.read_excel('data\StateGunSafetyLaws.xlsx', header=0)
 GunLawStrength = pd.read_excel('data\GiffordGunLawStrength.xlsx', header=0)
-HomicidesbyState = pd.read_excel('data\HomicidesbyState.xls', header=3)
+HomicidesbyState = pd.read_excel('data\HomicidesbyState.xls', header=0)
 MostGunSales = pd.read_excel('data\StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx', header =0)
 
 StateGunSafetyLaws.head()
@@ -34,7 +34,7 @@ c.execute('''CREATE TABLE IF NOT EXISTS StateGunSafetyLaws (
         restrictive gun law TEXT,
         Bill Identifier TEXT,
         PRIMARY KEY(id),
-        FOREIGN KEY(state) REFERENCES HomicidesbyState(state)
+        FOREIGN KEY(state) REFERENCES HomicidesbyState(State_ID)
         );
     '''
     )
@@ -44,16 +44,16 @@ c.execute('''CREATE TABLE IF NOT EXISTS GunLawStrength (
         State_list TEXT,
         Grade TEXT,
         Death_Rank INTEGER,
-        Rate_per_'100K' INTEGER,
+        Rate_per_100K INTEGER,
         PRIMARY KEY(Gun_Law_Rank),
-        FOREIGN KEY(State_list) REFERENCES HomicidesbyState(List_State),
+        FOREIGN KEY(State_list) REFERENCES HomicidesbyState(State_ID),
         FOREIGN KEY(Death_Rank) REFERENCES MostGunSales(Rank_2023)
         );
     '''
     )
 
 c.execute('''CREATE TABLE IF NOT EXISTS HomicidesbyState (
-        List_State TEXT,
+        State_ID TEXT,
         Total_Murders INTEGER,
         Total_Firearms INTEGER,
         Handguns INTEGER,
@@ -62,7 +62,7 @@ c.execute('''CREATE TABLE IF NOT EXISTS HomicidesbyState (
         Type_unknown INTEGER,
         Cutting_instruments INTEGER,
         Other_Weapons INTEGER,
-        PRIMARY KEY(List_State),
+        PRIMARY KEY(State_ID),
         FOREIGN KEY(Total_Firearms) REFERENCES MostGunSales(Rank_2023),
         FOREIGN KEY(Total_Murders) REFERENCES GunLawStrength(Gun_Law_Rank)
         );
@@ -79,14 +79,14 @@ c.execute('''CREATE TABLE IF NOT EXISTS MostGunSales (
         Rank_2023 INTEGER,
         Firearm_Type TEXT,
         PRIMARY KEY(Rank_2023),
-        FOREIGN KEY(allState) REFERENCES HomicidesbyState(List_State),
+        FOREIGN KEY(allState) REFERENCES HomicidesbyState(State_ID),
         FOREIGN KEY(Firearm_Background_Checks_Feb_2023) REFERENCES StateGunSafetyLaws(state),
         FOREIGN KEY(Population) REFERENCES GunLawStrength(Gun_Law_Rank)
         );
     '''
     )
 
-StateGunSafetyLaws.to_sql('StateGunSafetyLaws', db_conn, if_exists='append', index=False)
+StateGunSafetyLaws.to_sql('StateSafetyLaws', db_conn, if_exists='append', index=False)
 GunLawStrength.to_sql('GunLawStrength', db_conn, if_exists='append', index=False)
 HomicidesbyState.to_sql('HomicidesbyState', db_conn, if_exists='append', index=False)
 MostGunSales.to_sql('MostGunSales', db_conn, if_exists='append', index=False)
