@@ -8,7 +8,8 @@ import xlrd
 connection = sqlite3.connect("StateGunSafetyLaws.db")
 cursor = connection.cursor()
 
-cursor.execute("create table if not exists StateGunSafetyLaws (my_State text, law_type text, restrictive text, bill_identifier text)")
+cursor.execute("create table if not exists StateGunSafetyLaws (state text, law_type text, restrictive text, bill_identifier text)")
+
 
 state_gun_laws_list = [
     ('California', 'Background Check, Domentic Abuse Restriction, Extreme Risk Protection Orders, Community Violence Intervention, Ghost Guns, Gun Dealer Regulations, Safe Storage Laws Notifications for Kids, Access to Justice, Location Regulation', 'Y', 'AB2551, AB2239, AB2870, AB2697, AB200, AB1929, SB154, AB2552, AB1621, AB2156, SB1327, SB1384, AB228, AB1842, AB452, SB906, AB2571, AB1594, SB915'),
@@ -44,6 +45,8 @@ state_gun_laws_list = [
     ]
 
 cursor.executemany("insert into StateGunSafetyLaws values (?,?,?,?)", state_gun_laws_list)
+#Change column name due to ambiguous error 
+cursor.execute("ALTER TABLE StateGunSafetyLaws RENAME COLUMN state to my_State");
 
 #print database rows
 #for row in cursor.execute("select * from StateGunSafetyLaws"):
