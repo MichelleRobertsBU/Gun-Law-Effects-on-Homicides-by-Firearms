@@ -8,7 +8,7 @@ import xlrd
 connection = sqlite3.connect("StateGunSafetyLaws.db")
 cursor = connection.cursor()
 
-cursor.execute("create table if not exists StateGunSafetyLaws (state text, law_type text, restrictive text, bill_identifier text)")
+cursor.execute("create table if not exists StateGunSafetyLaws (my_State text, law_type text, restrictive text, bill_identifier text)")
 
 
 state_gun_laws_list = [
@@ -45,8 +45,6 @@ state_gun_laws_list = [
     ]
 
 cursor.executemany("insert into StateGunSafetyLaws values (?,?,?,?)", state_gun_laws_list)
-#Change column name due to ambiguous error 
-cursor.execute("ALTER TABLE StateGunSafetyLaws RENAME COLUMN state to my_State");
 
 #print database rows
 #for row in cursor.execute("select * from StateGunSafetyLaws"):
@@ -57,7 +55,7 @@ sql = pd.read_sql_query("select * from StateGunSafetyLaws", connection)
 df = pd.DataFrame(sql, columns=["my_State", "law_type", "restrictive", "bill_identifier"])
 
 print(df)
-
+connection.close()
 
 
 #Add Excel Dataframes
@@ -94,7 +92,7 @@ c.execute('''CREATE TABLE IF NOT EXISTS GunLawStrength (
     )
 
 c.execute('''CREATE TABLE IF NOT EXISTS HomicidesbyState (
-        State TEXT,
+        allState TEXT,
         Total_Murders INTEGER,
         Total_Firearms INTEGER,
         Handguns INTEGER,
@@ -103,7 +101,7 @@ c.execute('''CREATE TABLE IF NOT EXISTS HomicidesbyState (
         Type_unknown INTEGER,
         Cutting_instruments INTEGER,
         Other_Weapons INTEGER,
-        PRIMARY KEY(State),
+        PRIMARY KEY(allState),
         FOREIGN KEY(Total_Firearms) REFERENCES MostGunSales(Rank_2023),
         FOREIGN KEY(Total_Murders) REFERENCES GunLawStrength(Gun_Law_Rank)
         );
@@ -130,19 +128,6 @@ GunLawStrength.to_sql('GunLawStrength', db_conn, if_exists='replace', index=Fals
 HomicidesbyState.to_sql('HomicidesbyState', db_conn, if_exists='replace', index=False)
 MostGunSales.to_sql('MostGunSales', db_conn, if_exists='replace', index=False)
 
-#Do States with favorable Gun Laws have lower homicides by firearms?
-print('*********************************')
-
-connection2 = sqlite3.connect("data/allFiles.db")
-cursor2 = connection.cursor()
-
-sql2 = pd.read_sql_query("SELECT my_State, restrictive FROM StateGunSafetyLaws LEFT JOIN HomicidesbyState ON StateGunSafetyLaws.my_State = HomicidesbyState.Total_Firearms;", connection2)
-cursor2.execute(sql2)
-dffavgun = pd.DataFrame(sql2)
-
-print(dffavgun)
-connection.close()
-
 #SQLite query to list tables in database with exception handling
 try:
     sqliteConnection = sqlite3.connect("data/allFiles.db")
@@ -163,19 +148,20 @@ finally:
         sqliteConnection.close()
         print("the sqlite connection is closed")
 
-
-#Do States with favorable Gun Laws have lower homicides by firearms?
+#Left Join tables MostGunSales and HomicidebyState
 print('*********************************')
+conn3 = sqlite3.connect("data/allFiles.db")
+cursor3 = conn3.cursor()
+sql3 = """SELECT allState, Firearm_Background_Checks_per_Residents_Feb_2023, Firearm_Background_Checks_Feb_2023, Firearm_Background_Checks_per_Residents_Feb_2022, Firearm_Background_Checks_Feb_2022, Population, Rank_2023, Firearm_Type  
+          FROM MostGunSales
+          LEFT JOIN HomicidesbyState
+          USING(allState);"""
 
-connection2 = sqlite3.connect("data\HomicidesbyState.db" "StateGunSafetyLaws.db")
-cursor2 = connection.cursor()
-cursor2.execute(sql_query)
-sql = pd.read_sql_query("SELECT state, restrictive FROM stategunsafetylaws LEFT JOIN HomicidesbyState ON stategunsafetylaws.state = HomicidesbyState.Total_Firearms;", connection2)
-dffavgun = pd.DataFrame(sql)
+cursor3.execute(sql3)
+result = cursor3.fetchall()
+for row in result:
+    print(row)
 
-print(dffavgun)
-connection.close()
-
-
+conn3.close()
 
 
