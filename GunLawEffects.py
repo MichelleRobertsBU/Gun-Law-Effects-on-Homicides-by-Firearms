@@ -4,6 +4,21 @@ import numpy as np
 import sqlite3
 import xlrd
 
+#Read Excel file to Pandas Dataframe and sort by Gun Sales Rank
+df_mostsales = pd.read_excel('data\StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx')
+
+sorted_df = df_mostsales.sort_values(by='Rank_2023', ignore_index=True)
+print(sorted_df.loc[:9])
+
+#Read Excel file to Pandas Dataframe, Join column to another Dataframe, sort by last 10
+print('*********************************')
+df_gunlaws = pd.read_excel('data\GiffordGunLawStrength.xlsx')
+extracted_col = df_gunlaws["Grade"]
+df_mostsales = df_mostsales.join(extracted_col)
+df_last_10 = df_mostsales.iloc[-10:]
+print(df_last_10)
+
+
 #Set up Sqlite3 and create Database for StateGunSafetyLaws
 connection = sqlite3.connect("StateGunSafetyLaws.db")
 cursor = connection.cursor()
