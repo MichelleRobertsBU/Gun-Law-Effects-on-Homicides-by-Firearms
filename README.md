@@ -1,10 +1,10 @@
 # Gun-Law-Effects-on-Homicides-by-Firearms\
-\
+
 
 The following is my final project for Data Analysis 2 (March 2023) with Code Louisville. 
-It is a Data Analysis of Gun Law Effects on Homicides by Firearms. My datasets include\
-an FBI table on Murders by state and the method of injury, information gathered from the\
-2023 Giffords: Courage to Fight Gun Violence Website, data on firearm Homicides for a 5 year\
+It is a Data Analysis of Gun Law Effects on Homicides by Firearms. My datasets include
+an FBI table on Murders by state and the method of injury, information gathered from the
+2023 Giffords: Courage to Fight Gun Violence Website, data on firearm Homicides for a 5 year
 period, and a list of states where the most firearms were purchased from a 24 Wall St.LLC 
 special report. My theory is that there will be more gun violence in the states with lax 
 gun laws. I will use database comparisons and graphic visualizations to demonstrate the 
@@ -12,12 +12,12 @@ connections.
 
 
 Listed below are the requirements for the project.
-\
 
-I have uploaded Gun Law Effects on Homocides by Firearms into my GitHub repository greater\
+
+I have uploaded Gun Law Effects on Homocides by Firearms into my GitHub repository greater
 than the required 5 times.
-This README file has been included and includes a description of my project. Relevant\
+This README file has been included and includes a description of my project. Relevant
 packages to be installed and instructions to run are listed below. 
-The project contains 4 original datasets. Three datasets are Excel files loaded into an\
-SQLite3 database. (Requirement 1) The other dataset is a local dataset built into SQLite3.\
+The project contains 4 original datasets. Three datasets are Excel files loaded into an
+SQLite3 database. (Requirement 1) The other dataset is a local dataset built into SQLite3.
 (Requirement 2) I Left Joined two tables in my SQLite3 database. (Requirement 3)

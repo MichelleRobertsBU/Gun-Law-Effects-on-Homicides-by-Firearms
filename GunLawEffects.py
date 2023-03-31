@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import sqlite3
 import xlrd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 #Read Excel file to Pandas Dataframe and sort by Gun Sales Rank
 df_mostsales = pd.read_excel('data\StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx')
@@ -20,6 +22,7 @@ print(df_last_10)
 
 
 #Set up Sqlite3 and create Database for StateGunSafetyLaws
+print('*********************************')
 connection = sqlite3.connect("StateGunSafetyLaws.db")
 cursor = connection.cursor()
 
@@ -178,5 +181,61 @@ for row in result:
     print(row)
 
 conn3.close()
+
+#Using Matplotlib for Visualization
+# Bar chart 
+
+df3 = pd.read_excel('data\GiffordGunLawStrength.xlsx')
+plt.rcParams["figure.figsize"] = [14.00, 6.50]
+plt.rcParams["figure.autolayout"] = True
+
+df3.plot(y = "Rate_per_Hundred", x = "State_list", kind='bar')
+plt.suptitle('States Gun Law Grades')
+plt.show()
+
+#Set figure size for Matplotlib
+plt.rcParams["figure.figsize"] = [12.00, 6.50]
+plt.rcParams["figure.autolayout"] = True
+
+
+# Make a list of columns needed for data analysis
+columns = ['allState','Total_Firearms']
+df = pd.read_excel('data\HomicidesbyState.xls', usecols=columns)
+
+
+# Scatter plot showing Near Earth Asteroids and Mininmum distance in kilometers.
+colors = np.random.randint(51, size=(51))
+df.plot.scatter(x = 'allState', y = 'Total_Firearms', c=colors, cmap='nipy_spectral')
+
+
+# Add title and labels to x- and y-axis
+plt.suptitle('Homicides by Firearms per State', fontsize = 15)
+plt.ylabel('Total Firearm Homicides')
+plt.xlabel('States')
+plt.xlim(left=-1, right=51)
+# rotate x-axis tick labels
+plt.xticks(rotation=90) 
+plt.show()
+
+#Create a matplotlib pie chart
+df_gunlaws = pd.read_excel('data\GiffordGunLawStrength.xlsx')
+
+fig1, ax1 = plt.subplots()
+plt.title('State Gun Law Grades', fontsize = 15)
+
+y = np.array([48, 18, 14, 16, 4])
+mylabels = ["F", "C", "B", "A", "D"]
+myexplode = [0.2, 0, 0, 0, 0]
+
+plt.pie(y, labels = mylabels, explode = myexplode)
+plt.legend()
+plt.show()
+
+#plt.suptitle('', fontsize = 15)
+#ax1.axis('equal')
+
+
+
+
 
 
