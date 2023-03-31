@@ -1,10 +1,7 @@
-from msilib.schema import tables
 import pandas as pd
 import numpy as np
 import sqlite3
-import xlrd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 #Read Excel file to Pandas Dataframe and sort by Gun Sales Rank
 df_mostsales = pd.read_excel('data\StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx')
@@ -183,7 +180,7 @@ for row in result:
 conn3.close()
 
 #Using Matplotlib for Visualization
-# Bar chart 
+# Bar chart showing Gun Law Strength with Rate of deaths per hundred thousand
 
 df3 = pd.read_excel('data\GiffordGunLawStrength.xlsx')
 plt.rcParams["figure.figsize"] = [14.00, 6.50]
@@ -203,7 +200,7 @@ columns = ['allState','Total_Firearms']
 df = pd.read_excel('data\HomicidesbyState.xls', usecols=columns)
 
 
-# Scatter plot showing Near Earth Asteroids and Mininmum distance in kilometers.
+# Scatter plot showing Homicides by Firearms per State.
 colors = np.random.randint(51, size=(51))
 df.plot.scatter(x = 'allState', y = 'Total_Firearms', c=colors, cmap='nipy_spectral')
 
@@ -217,7 +214,7 @@ plt.xlim(left=-1, right=51)
 plt.xticks(rotation=90) 
 plt.show()
 
-#Create a matplotlib pie chart
+#Create a matplotlib pie chart, shows a majority of state fail at Gun Laws
 df_gunlaws = pd.read_excel('data\GiffordGunLawStrength.xlsx')
 
 fig1, ax1 = plt.subplots()
