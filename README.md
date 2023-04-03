@@ -29,10 +29,13 @@ visualizations with Matplotlib. (Requirement 4)
 
 Project was written with Python in Visual Studio. You will run the program on GunLawEffects.py.
 The following imports are needed.
-import pandas as pd
-import numpy as np
-import sqlite3
-import matplotlib.pyplot as plt
+pandas
+numpy
+sqlite3
+matplotlib
+openpyxl
+xlrd
+
 All Datasets are in the project, including StateGunSafetyLaws.db which is generated during the program.
 When you run the program, all the data will be generated and you will have to scroll up 
 to review. The graphs will need to be closed out before the next one appears. 
