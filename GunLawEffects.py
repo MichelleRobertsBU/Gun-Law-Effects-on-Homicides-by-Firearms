@@ -2,16 +2,18 @@ import pandas as pd
 import numpy as np
 import sqlite3
 import matplotlib.pyplot as plt
+import openpxl
+import xlrd
 
 #Read Excel file to Pandas Dataframe and sort by Gun Sales Rank
-df_mostsales = pd.read_excel('data\StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx')
+df_mostsales = pd.read_excel('data/StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx')
 
 sorted_df = df_mostsales.sort_values(by='Rank_2023', ignore_index=True)
 print(sorted_df.loc[:9])
 
 #Read Excel file to Pandas Dataframe, Join column to another Dataframe, sort by last 10
 print('*********************************')
-df_gunlaws = pd.read_excel('data\GiffordGunLawStrength.xlsx')
+df_gunlaws = pd.read_excel('data/GiffordGunLawStrength.xlsx')
 extracted_col = df_gunlaws["Grade"]
 df_mostsales = df_mostsales.join(extracted_col)
 df_last_10 = df_mostsales.iloc[-10:]
@@ -75,9 +77,9 @@ connection.close()
 
 #Add Excel Dataframes
 print('*********************************')
-GunLawStrength = pd.read_excel('data\GiffordGunLawStrength.xlsx', header=0)
-HomicidesbyState = pd.read_excel('data\HomicidesbyState.xls', header=0)
-MostGunSales = pd.read_excel('data\StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx', header =0)
+GunLawStrength = pd.read_excel('data/GiffordGunLawStrength.xlsx', header=0)
+HomicidesbyState = pd.read_excel('data/HomicidesbyState.xls', header=0)
+MostGunSales = pd.read_excel('data/StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx', header =0)
 
 GunLawStrength.head()
 print(GunLawStrength)
@@ -182,7 +184,7 @@ conn3.close()
 #Using Matplotlib for Visualization
 # Bar chart showing Gun Law Strength with Rate of deaths per hundred thousand
 
-df3 = pd.read_excel('data\GiffordGunLawStrength.xlsx')
+df3 = pd.read_excel('data/GiffordGunLawStrength.xlsx')
 plt.rcParams["figure.figsize"] = [14.00, 6.50]
 plt.rcParams["figure.autolayout"] = True
 
@@ -197,7 +199,7 @@ plt.rcParams["figure.autolayout"] = True
 
 # Make a list of columns needed for data analysis
 columns = ['allState','Total_Firearms']
-df = pd.read_excel('data\HomicidesbyState.xls', usecols=columns)
+df = pd.read_excel('data/HomicidesbyState.xls', usecols=columns)
 
 
 # Scatter plot showing Homicides by Firearms per State.
@@ -215,7 +217,7 @@ plt.xticks(rotation=90)
 plt.show()
 
 #Create a matplotlib pie chart, shows a majority of state fail at Gun Laws
-df_gunlaws = pd.read_excel('data\GiffordGunLawStrength.xlsx')
+df_gunlaws = pd.read_excel('data/GiffordGunLawStrength.xlsx')
 
 fig1, ax1 = plt.subplots()
 plt.title('State Gun Law Grades', fontsize = 15)
