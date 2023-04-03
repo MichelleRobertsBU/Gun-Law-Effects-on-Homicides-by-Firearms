@@ -2,8 +2,6 @@ import pandas as pd
 import numpy as np
 import sqlite3
 import matplotlib.pyplot as plt
-import openpxl
-import xlrd
 
 #Read Excel file to Pandas Dataframe and sort by Gun Sales Rank
 df_mostsales = pd.read_excel('data/StatesWheretheMostPeopleBoughtGunsFebruary2023.xlsx')
