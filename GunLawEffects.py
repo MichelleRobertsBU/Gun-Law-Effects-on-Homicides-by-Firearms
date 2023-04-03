@@ -202,9 +202,9 @@ df = pd.read_excel('data/HomicidesbyState.xls', usecols=columns)
 
 # Scatter plot showing Homicides by Firearms per State.
 colors = np.random.randint(51, size=(51))
-df.plot.scatter(x = 'allState', y = 'Total_Firearms', c=colors, cmap='nipy_spectral')
-
-
+#df.plot.scatter(x = 'allState', y = 'Total_Firearms', c=colors, cmap='nipy_spectral')
+ax = df.plot.scatter(x = 'allState', y = 'Total_Firearms', c=colors, cmap='nipy_spectral')
+df.plot.line(x = 'allState', y = 'Total_Firearms', ax=ax, style='g')
 # Add title and labels to x- and y-axis
 plt.suptitle('Homicides by Firearms per State', fontsize = 15)
 plt.ylabel('Total Firearm Homicides')
@@ -218,11 +218,11 @@ plt.show()
 df_gunlaws = pd.read_excel('data/GiffordGunLawStrength.xlsx')
 
 fig1, ax1 = plt.subplots()
-plt.title('State Gun Law Grades', fontsize = 15)
+plt.title('State Gun Law Grades A Through F', fontsize = 15)
 
-y = np.array([48, 18, 14, 16, 4])
-mylabels = ["F", "C", "B", "A", "D"]
-myexplode = [0.2, 0, 0, 0, 0]
+y = np.array([16, 14, 18, 4, 48])
+mylabels = ["A", "B", "C", "D", "F"]
+myexplode = [0.1, 0.1, 0.1, 0.1, 0.2]
 
 plt.pie(y, labels = mylabels, explode = myexplode)
 plt.legend()
